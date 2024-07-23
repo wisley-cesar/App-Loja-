@@ -5,6 +5,8 @@ import 'package:loja/models/product_list.dart';
 import 'package:loja/pages/cart_page.dart';
 import 'package:loja/pages/oder_page.dart';
 import 'package:loja/pages/product_detail_page.dart';
+import 'package:loja/pages/product_form_page.dart';
+import 'package:loja/pages/products_page.dart';
 import 'package:loja/pages/products_overview_pages.dart';
 import 'package:loja/utils/app_routes.dart';
 import 'package:provider/provider.dart';
@@ -21,13 +23,13 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => new ProductList(),
+          create: (_) => ProductList(),
         ),
         ChangeNotifierProvider(
-          create: (_) => new Cart(),
+          create: (_) => Cart(),
         ),
         ChangeNotifierProvider(
-          create: (_) => new OrderList(),
+          create: (_) => OrderList(),
         ),
       ],
       child: MaterialApp(
@@ -62,6 +64,8 @@ class MyApp extends StatelessWidget {
           AppRoutes.PRODUCT_DETAIL: (context) => const ProductDetailPage(),
           AppRoutes.CART: (context) => const CartPage(),
           AppRoutes.ORDERS: (context) => const OderPage(),
+          AppRoutes.PRODUCTS: (context) => const ProductsPage(),
+          AppRoutes.FORM: (context) => const ProductFormPage(),
         },
       ),
     );
