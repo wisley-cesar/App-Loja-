@@ -27,6 +27,37 @@ class CartItemWidget extends StatelessWidget {
           size: 40,
         ),
       ),
+      confirmDismiss: (_) {
+        return showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Tem Certeza?'),
+            content: const Text(
+              'Quer remover o item do carrinho?',
+              style: TextStyle(fontSize: 15),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: const Text(
+                    'Não',
+                    style: TextStyle(fontSize: 17),
+                  )),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text(
+                  'Sim',
+                  style: TextStyle(fontSize: 17),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
       onDismissed: (_) {
         Provider.of<Cart>(
           context,
@@ -50,7 +81,7 @@ class CartItemWidget extends StatelessWidget {
               ),
             ),
             title: Text(cartItem.name),
-            subtitle: Text('Total : R\$ ${valorTotalProduto}'),
+            subtitle: Text('Total : R\$ $valorTotalProduto'),
             trailing: Text('${cartItem.quantity}x'),
           ),
         ),
