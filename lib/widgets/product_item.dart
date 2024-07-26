@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loja/models/product.dart';
+import 'package:loja/models/product_list.dart';
 import 'package:loja/utils/app_routes.dart';
+import 'package:provider/provider.dart';
 
 class ProductItem extends StatelessWidget {
   final Product product;
@@ -20,12 +22,52 @@ class ProductItem extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.edit),
               color: Theme.of(context).colorScheme.primary,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutes.FORM,
+                  arguments: product,
+                );
+              },
             ),
             IconButton(
               icon: const Icon(Icons.delete),
               color: Theme.of(context).colorScheme.error,
-              onPressed: () {},
+              onPressed: () {
+                showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Excluir Produto'),
+                    content: const Text('Tem certeza?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text(
+                          'Não',
+                          style: TextStyle(fontSize: 17),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                        child: const Text(
+                          'Sim',
+                          style: TextStyle(fontSize: 17),
+                        ),
+                      ),
+                    ],
+                  ),
+                ).then(
+                  (value) {
+                    if (value ?? false) {
+                      Provider.of<ProductList>(
+                        context,
+                        listen: false,
+                      ).removeProduct(product);
+                    }
+                  },
+                );
+              },
             ),
           ],
         ),
