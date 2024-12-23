@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:loja/models/product.dart';
 import 'package:loja/models/product_list.dart';
@@ -10,6 +12,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final message = ScaffoldMessenger.of(context);
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: NetworkImage(product.imageUrl),
@@ -58,12 +61,23 @@ class ProductItem extends StatelessWidget {
                     ],
                   ),
                 ).then(
-                  (value) {
+                  (value) async {
                     if (value ?? false) {
-                      Provider.of<ProductList>(
-                        context,
-                        listen: false,
-                      ).removeProduct(product);
+                      try {
+                        await Provider.of<ProductList>(
+                          context,
+                          listen: false,
+                        ).removeProduct(product);
+                      } catch (error) {
+                        message.showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              error.toString(),
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        );
+                      }
                     }
                   },
                 );
