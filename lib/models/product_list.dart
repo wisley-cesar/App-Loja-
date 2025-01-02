@@ -6,10 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:loja/exception/http_exception.dart';
 
 import 'package:loja/models/product.dart';
+import 'package:loja/utils/constants.dart';
 
 class ProductList with ChangeNotifier {
-  final _baseUrl =
-      'https://loja-flutter-wisley-cesar-default-rtdb.firebaseio.com/';
+  
 
   final List<Product> _items = [];
 
@@ -24,7 +24,7 @@ class ProductList with ChangeNotifier {
   Future<void> loadProducts() async {
     _items.clear();
     final response = await http.get(
-      Uri.parse("$_baseUrl.json"),
+      Uri.parse("${Constants.PRODUCT_BASE_URL}.json"),
     );
 
     if (response.body == null || response.body == 'null') {
@@ -76,7 +76,7 @@ class ProductList with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final response = await http.post(
-      Uri.parse("$_baseUrl/products.json"),
+      Uri.parse("${Constants.PRODUCT_BASE_URL}/products.json"),
       body: jsonEncode(
         {
           'name': product.name,
@@ -107,7 +107,7 @@ class ProductList with ChangeNotifier {
 
     if (index >= 0) {
       await http.patch(
-        Uri.parse("$_baseUrl/products/${product.id}.json"),
+        Uri.parse("${Constants.PRODUCT_BASE_URL}/${product.id}.json"),
         body: jsonEncode(
           {
             'name': product.name,
@@ -132,7 +132,7 @@ class ProductList with ChangeNotifier {
         notifyListeners();
 
         final response = await http.delete(
-          Uri.parse("$_baseUrl/products/${product.id}.json"),
+          Uri.parse("${Constants.PRODUCT_BASE_URL}/${product.id}.json"),
         );
 
         if (response.statusCode >= 400) {
