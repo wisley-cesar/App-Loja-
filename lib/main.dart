@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loja/models/cart.dart';
 import 'package:loja/models/order_list.dart';
 import 'package:loja/models/product_list.dart';
+import 'package:loja/pages/auth_page.dart';
 import 'package:loja/pages/cart_page.dart';
 import 'package:loja/pages/oder_page.dart';
 import 'package:loja/pages/product_detail_page.dart';
@@ -15,7 +16,7 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget { 
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         routes: {
+          AppRoutes.AUTH: (context) => const AuthPage(),
           AppRoutes.HOME: (context) => const ProductsOverviewPages(),
           AppRoutes.PRODUCT_DETAIL: (context) => const ProductDetailPage(),
           AppRoutes.CART: (context) => const CartPage(),
