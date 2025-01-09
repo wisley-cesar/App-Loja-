@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:loja/models/auth.dart';
 import 'package:loja/models/cart.dart';
 import 'package:loja/models/order_list.dart';
 import 'package:loja/models/product_list.dart';
-import 'package:loja/pages/auth_page.dart';
+import 'package:loja/pages/auth_or_home_page.dart';
 import 'package:loja/pages/cart_page.dart';
 import 'package:loja/pages/oder_page.dart';
 import 'package:loja/pages/product_detail_page.dart';
 import 'package:loja/pages/product_form_page.dart';
 import 'package:loja/pages/products_page.dart';
-import 'package:loja/pages/products_overview_pages.dart';
 import 'package:loja/utils/app_routes.dart';
 import 'package:provider/provider.dart';
-
+  
 void main() {
   runApp(const MyApp());
 }
@@ -24,7 +24,16 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => ProductList(),
+          create: (_) => Auth(),
+        ),
+        ChangeNotifierProxyProvider<Auth, ProductList>(
+          create: (_) => ProductList('', []),
+          update: (context, auth, previous) {
+            return ProductList(
+              auth.token ?? '',
+              previous?.items ?? [],
+            );
+          },
         ),
         ChangeNotifierProvider(
           create: (_) => Cart(),
@@ -61,8 +70,7 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         routes: {
-          AppRoutes.AUTH: (context) => const AuthPage(),
-          AppRoutes.HOME: (context) => const ProductsOverviewPages(),
+          AppRoutes.AUTH_OR_HOME: (context) => const AuthOrHomePage(),
           AppRoutes.PRODUCT_DETAIL: (context) => const ProductDetailPage(),
           AppRoutes.CART: (context) => const CartPage(),
           AppRoutes.ORDERS: (context) => const OderPage(),

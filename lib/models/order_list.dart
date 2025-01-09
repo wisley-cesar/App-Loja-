@@ -51,7 +51,6 @@ class OrderList with ChangeNotifier {
             }).toList(),
           ),
         );
-        print(data);
       },
     );
 
