@@ -10,7 +10,7 @@ import 'package:loja/utils/constants.dart';
 
 class ProductList with ChangeNotifier {
   List<Product> _items = [];
-  String? _token;
+  final String? _token;
   ProductList(this._token, this._items);
 
   List<Product> get items => [..._items];
@@ -24,7 +24,7 @@ class ProductList with ChangeNotifier {
   Future<void> loadProducts() async {
     _items.clear();
     final response = await http.get(
-      Uri.parse("${Constants.PRODUCT_BASE_URL}/products.json?auth=$_token"),
+      Uri.parse("${Constants.PRODUCT_BASE_URL}.json?auth=$_token"),
     );
 
     if (response.body == null || response.body == 'null') {
