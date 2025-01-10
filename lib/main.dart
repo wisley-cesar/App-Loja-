@@ -11,7 +11,7 @@ import 'package:loja/pages/product_form_page.dart';
 import 'package:loja/pages/products_page.dart';
 import 'package:loja/utils/app_routes.dart';
 import 'package:provider/provider.dart';
-  
+
 void main() {
   runApp(const MyApp());
 }
@@ -35,11 +35,17 @@ class MyApp extends StatelessWidget {
             );
           },
         ),
-        ChangeNotifierProvider(
-          create: (_) => Cart(),
+        ChangeNotifierProxyProvider<Auth, OrderList>(
+          create: (_) => OrderList('', []),
+          update: (context, auth, previous) {
+            return OrderList(
+              auth.token ?? '',
+              previous?.items ?? [],
+            );
+          },
         ),
         ChangeNotifierProvider(
-          create: (_) => OrderList(),
+          create: (_) => Cart(),
         ),
       ],
       child: MaterialApp(
