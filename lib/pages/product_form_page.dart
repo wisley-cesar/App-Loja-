@@ -146,6 +146,9 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         if (name.trim().length < 3) {
                           return 'O nome precisa no mínimo de 3 letras. ';
                         }
+                        if (name.trim().length > 23) {
+                          return 'Nome Grande Demais ';
+                        }
 
                         return null;
                       },
