@@ -13,7 +13,7 @@ import 'package:loja/utils/app_routes.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyApp()); 
 }
 
 //
