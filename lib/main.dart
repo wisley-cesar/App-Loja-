@@ -11,11 +11,12 @@ import 'package:loja/pages/product_form_page.dart';
 import 'package:loja/pages/products_page.dart';
 import 'package:loja/utils/app_routes.dart';
 import 'package:provider/provider.dart';
-  
+
 void main() {
   runApp(const MyApp());
 }
 
+//
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -27,19 +28,27 @@ class MyApp extends StatelessWidget {
           create: (_) => Auth(),
         ),
         ChangeNotifierProxyProvider<Auth, ProductList>(
-          create: (_) => ProductList('', []),
+          create: (_) => ProductList(),
           update: (context, auth, previous) {
             return ProductList(
               auth.token ?? '',
+              auth.userId ?? '',
               previous?.items ?? [],
+            );
+          },
+        ),
+        ChangeNotifierProxyProvider<Auth, OrderList>(
+          create: (_) => OrderList(),
+          update: (context, auth, previous) {
+            return OrderList(
+              auth.token ?? '',
+              auth.userId ?? '',
+              previous?.items ?? const [],
             );
           },
         ),
         ChangeNotifierProvider(
           create: (_) => Cart(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => OrderList(),
         ),
       ],
       child: MaterialApp(

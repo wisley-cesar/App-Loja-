@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:loja/exception/http_exception.dart';
@@ -10,8 +11,14 @@ import 'package:loja/utils/constants.dart';
 
 class ProductList with ChangeNotifier {
   List<Product> _items = [];
-  String? _token;
-  ProductList(this._token, this._items);
+  final String _userId;
+  final String _token;
+
+  ProductList([
+    this._token = '',
+    this._userId = '',
+    this._items = const [],
+  ]);
 
   List<Product> get items => [..._items];
   List<Product> get favoriteItems =>
@@ -24,7 +31,7 @@ class ProductList with ChangeNotifier {
   Future<void> loadProducts() async {
     _items.clear();
     final response = await http.get(
-      Uri.parse("${Constants.PRODUCT_BASE_URL}/products.json?auth=$_token"),
+      Uri.parse("${Constants.PRODUCT_BASE_URL}.json?auth=$_token"),
     );
 
     if (response.body == null || response.body == 'null') {
@@ -34,21 +41,25 @@ class ProductList with ChangeNotifier {
 
     final Map<String, dynamic> data = jsonDecode(response.body);
 
+    final favResponse = await http.get(
+      Uri.parse("${Constants.USER_FAVORITES_URL}/$_userId.json?auth=$_token"),
+    );
+    Map<String, dynamic> favDate =
+        favResponse.body == 'null' ? {} : jsonDecode(favResponse.body);
+
     data.forEach((productId, productData) {
+      final isFavorite = favDate[productId] ?? false;
       if (productData is Map<String, dynamic>) {
-        _items.add(Product(
-          id: productId,
-          name: productData['name'] ?? 'Unnamed Product',
-          description:
-              productData['description'] ?? 'No description available.',
-          price: productData['price'] != null
-              ? (productData['price'] is num
-                  ? (productData['price'] as num).toDouble()
-                  : double.tryParse(productData['price'].toString()) ?? 0.0)
-              : 0.0,
-          imageUrl: productData['imageUrl'] ?? '',
-          isFavorite: productData['isFavorite'] ?? false,
-        ));
+        _items.add(
+          Product(
+            id: productId,
+            name: productData['name'],
+            description: productData['description'],
+            price: productData['price'],
+            imageUrl: productData['imageUrl'],
+            isFavorite: isFavorite,
+          ),
+        );
       }
     });
 
@@ -90,12 +101,12 @@ class ProductList with ChangeNotifier {
 
     _items.add(
       Product(
-          id: id,
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          imageUrl: product.imageUrl,
-          isFavorite: product.isFavorite),
+        id: id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+      ),
     );
     notifyListeners();
   }
