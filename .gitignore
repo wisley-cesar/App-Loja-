@@ -45,3 +45,6 @@ app.*.map.json
 /android/app/release
 
 /lib/models/auth.dart
+/lib/models/product_list.dart
+/lib/models/product.dart
+
