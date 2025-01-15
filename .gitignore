@@ -43,3 +43,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+/lib/models/auth.dart
+/lib/models/product_list.dart
+/lib/models/product.dart
+
