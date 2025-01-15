@@ -19,7 +19,8 @@ class _AuthFormState extends State<AuthForm>
   bool _isLoading = false;
 
   AnimationController? _controller;
-  Animation<Size>? _heihtAnimation;
+  Animation<double>? _opacityAnimation;
+  Animation<Offset>? _slideAnimation;
   @override
   void initState() {
     super.initState();
@@ -29,9 +30,18 @@ class _AuthFormState extends State<AuthForm>
           milliseconds: 300,
         ));
 
-    _heihtAnimation = Tween(
-      begin: const Size(double.infinity, 310),
-      end: const Size(double.infinity, 400),
+    _opacityAnimation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller!,
+        curve: Curves.linear,
+      ),
+    );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, -1.5),
+      end: const Offset(0, 0),
     ).animate(
       CurvedAnimation(
         parent: _controller!,
@@ -57,7 +67,7 @@ class _AuthFormState extends State<AuthForm>
     }
 
     bool _isLogin() => _authMode == AuthMode.Login;
-    bool _isSignup() => _authMode == AuthMode.Signup;
+    // bool _isSignup() => _authMode == AuthMode.Signup;
 
     void _switchAuthMode() {
       setState(() {
@@ -128,7 +138,7 @@ class _AuthFormState extends State<AuthForm>
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.linear,
-        height: _isLogin() ? 310 : 400,
+        height: _isLogin() ? 320 : 400,
         // height: _heihtAnimation?.value.height ?? (_isLogin() ? 310 : 400),
 
         width: deviceSize.width * 0.75,
@@ -138,7 +148,7 @@ class _AuthFormState extends State<AuthForm>
           child: Column(
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'E-mail'),
+                decoration: const InputDecoration(labelText: 'E-mail'),
                 keyboardType: TextInputType.emailAddress,
                 onSaved: (email) => _authData['email'] = email ?? '',
                 validator: (_email) {
@@ -160,22 +170,35 @@ class _AuthFormState extends State<AuthForm>
                   }
                 },
               ),
-              if (!_isLogin())
-                TextFormField(
-                  decoration:
-                      const InputDecoration(labelText: ' Confirmar Senha'),
-                  keyboardType: TextInputType.emailAddress,
-                  obscureText: true,
-                  validator: _isLogin()
-                      ? null
-                      : (_password) {
-                          final password = _password ?? '';
-                          if (password != _passawordController.text) {
-                            return 'Senhas são diferentes';
-                          }
-                          return null;
-                        },
+              AnimatedContainer(
+                constraints: BoxConstraints(
+                  minHeight: _isLogin() ? 0 : 60,
+                  maxHeight: _isLogin() ? 0 : 120,
                 ),
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.linear,
+                child: FadeTransition(
+                  opacity: _opacityAnimation!,
+                  child: SlideTransition(
+                    position: _slideAnimation!,
+                    child: TextFormField(
+                      decoration:
+                          const InputDecoration(labelText: ' Confirmar Senha'),
+                      keyboardType: TextInputType.emailAddress,
+                      obscureText: true,
+                      validator: _isLogin()
+                          ? null
+                          : (_password) {
+                              final password = _password ?? '';
+                              if (password != _passawordController.text) {
+                                return 'Senhas são diferentes';
+                              }
+                              return null;
+                            },
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(height: 20),
               _isLoading
                   ? const CircularProgressIndicator()
