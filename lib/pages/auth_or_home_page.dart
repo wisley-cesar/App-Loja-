@@ -11,7 +11,7 @@ class AuthOrHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Auth auth = Provider.of<Auth>(context);
     return FutureBuilder(
-      future: auth.trayAutoLogin(),
+      future: auth.tryAutoLogin(),
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
