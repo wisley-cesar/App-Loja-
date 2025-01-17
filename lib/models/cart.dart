@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:loja/models/cart_item.dart';
 import 'package:loja/models/product.dart';
@@ -12,7 +11,15 @@ class Cart with ChangeNotifier {
   }
 
   int get itemsCount {
-    return _items.length;
+    return items.length;
+  }
+
+  double get totalAmount {
+    double total = 0.0;
+    _items.forEach((key, cartItem) {
+      total += cartItem.price * cartItem.quantity;
+    });
+    return total;
   }
 
   void addItem(Product product) {
@@ -20,11 +27,12 @@ class Cart with ChangeNotifier {
       _items.update(
         product.id,
         (existingItem) => CartItem(
-            id: existingItem.id,
-            productId: existingItem.productId,
-            name: existingItem.name,
-            quantity: existingItem.quantity + 1,
-            price: existingItem.price),
+          id: existingItem.id,
+          productId: existingItem.productId,
+          name: existingItem.name,
+          quantity: existingItem.quantity + 1,
+          price: existingItem.price,
+        ),
       );
     } else {
       _items.putIfAbsent(
@@ -37,23 +45,20 @@ class Cart with ChangeNotifier {
           price: product.price,
         ),
       );
-      notifyListeners();
     }
+    notifyListeners();
   }
 
-  double get totalAmount {
-    double total = 0.0;
-    _items.forEach((key, cartItem) {
-      total += cartItem.price * cartItem.quantity;
-    });
-
-    return total;
+  void removeItem(String productId) {
+    _items.remove(productId);
+    notifyListeners();
   }
 
   void removeSingleItem(String productId) {
     if (!_items.containsKey(productId)) {
       return;
     }
+
     if (_items[productId]?.quantity == 1) {
       _items.remove(productId);
     } else {
@@ -68,11 +73,6 @@ class Cart with ChangeNotifier {
         ),
       );
     }
-    notifyListeners();
-  }
-
-  void removeItem(String productId) {
-    _items.remove(productId);
     notifyListeners();
   }
 
