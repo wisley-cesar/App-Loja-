@@ -82,7 +82,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
       await Provider.of<ProductList>(
         context,
         listen: false,
-      ).sabeProduct(_formDate);
+      ).saveProduct(_formDate);
       Navigator.of(context).pop();
     } catch (error) {
       if (context.mounted) {
