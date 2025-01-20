@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loja/models/auth.dart';
+import 'package:loja/pages/oder_page.dart';
 import 'package:loja/utils/app_routes.dart';
+import 'package:loja/utils/custom_route.dart';
 import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -30,8 +32,13 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.payment),
             title: const Text('Pedidos'),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(
-                AppRoutes.ORDERS,
+              // Navigator.of(context).pushReplacementNamed(
+              //   AppRoutes.ORDERS,
+              // );
+              Navigator.of(context).pushReplacement(
+                CustomRoute(
+                  builder: (ctx) => const OderPage(),
+                ),
               );
             },
           ),
