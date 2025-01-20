@@ -1,5 +1,3 @@
----
-
 # Aplicativo de Loja Online em Flutter
 
 ## Descrição
@@ -8,9 +6,9 @@ Bem-vindo ao meu aplicativo de loja online desenvolvido em Flutter! Este projeto
 
 ## Status do Projeto
 
-🚧 **Este projeto está em construção** 🚧
+✅ **Este projeto está pronto!** ✅
 
-Atualmente, estou trabalhando em melhorias no gerenciamento de estado e na interface do usuário. Fique atento para atualizações futuras!
+Todas as funcionalidades planejadas foram implementadas, e o aplicativo está funcionando como esperado.
 
 ## Funcionalidades
 
@@ -42,6 +40,19 @@ Atualmente, estou trabalhando em melhorias no gerenciamento de estado e na inter
 
 - Flutter
 - Dart
+
+## Imagens do Projeto
+
+### Tela de Login
+<img src="https://github.com/user-attachments/assets/e6be85f3-c2b4-40b6-8841-e42c7200bc54" alt="Tela de Finalização de Compra" width="300">
+
+
+### Tela Inicial
+<img src="https://github.com/user-attachments/assets/f06eeb61-2d01-4275-b978-0245790171e8" alt="Tela Inicial" width="300">
+
+### Tela de Meu Pedidos
+<img src="https://github.com/user-attachments/assets/593371bf-1ce2-4b25-ba4f-40b33018ce62" alt="Tela de Detalhes do Produto" width="300">
+
 
 ## Contribuições
 
