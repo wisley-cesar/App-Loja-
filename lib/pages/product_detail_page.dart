@@ -19,40 +19,59 @@ class ProductDetailPage extends StatelessWidget {
                 product.name,
                 style: Theme.of(context).primaryTextTheme.titleLarge,
               ),
-              background: Hero(
-                tag: product.id,
-                child: Image.network(
-                  product.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Hero(
+                    tag: product.id,
+                    child: Image.network(
+                      product.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const DecoratedBox(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                      begin: Alignment(0, 0.8),
+                      end: Alignment(0, 0),
+                      colors: [
+                        Color.fromRGBO(0, 0, 0, 0.6),
+                        Color.fromRGBO(0, 0, 0, 0),
+                      ],
+                    )),
+                  )
+                ],
               ),
             ),
           ),
           SliverList(
-              delegate: SliverChildListDelegate([
-            SizedBox(
-              height: 40,
-              child: Text(
-                'R\$ ${(product.price).toStringAsFixed(2)}',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 20,
+            delegate: SliverChildListDelegate(
+              [
+                SizedBox(
+                  height: 40,
+                  child: Text(
+                    'R\$ ${(product.price).toStringAsFixed(2)}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  width: double.infinity,
+                  child: Text(
+                    product.description,
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              width: double.infinity,
-              child: Text(
-                product.description,
-                textAlign: TextAlign.center,
-              ),
-            )
-          ]))
+          )
         ],
       ),
     );
